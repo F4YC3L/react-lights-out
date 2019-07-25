@@ -57,7 +57,9 @@ class Board extends Component {
   createBoard() {
     let board = [];
     //create array-of-arrays of true/false values
-    board = Array.from({length:this.props.nrows}).map(r => Array.from({length:this.props.ncols}).map( c => this.randLit()))
+    board = Array.from({length:this.props.nrows})
+                 .map(r => Array.from({length:this.props.ncols})
+                 .map( c => this.randLit()))
     return board
   }
 
@@ -71,12 +73,10 @@ class Board extends Component {
     function flipCell(y, x) {
       // if this coord is actually on board, flip it
       if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
-        console.log('x:', x, '  y:', y)
-        console.log('board', board)
-
         board[y][x] = !board[y][x];
       }
     }
+
     //flip this cell and the cells around it
     flipCell(y, x);
     flipCell(y, x - 1);
@@ -87,16 +87,10 @@ class Board extends Component {
     // win when every cell is turned off
     //determine is the game has been won
     let hasWon = board.every(row => row.every(cell => !cell));
-    console.log(hasWon)
-
     this.setState({ board, hasWon});
-
-
   }
 
-
   /** Render game board or winning message. */
-
 
   render() {
     if (this.state.hasWon) {
@@ -104,7 +98,9 @@ class Board extends Component {
     }
 
     let table = this.state.board.map((r, y) => 
-      <tr key={y}>{r.map( (c, x) => <Cell isLit={c} key={`${y}-${x}`} flipCellsAround={() => this.flipCellsAround(`${y}-${x}`)}/>)}</tr>)
+      <tr key={y}>
+      {r.map( (c, x) => <Cell isLit={c} key={`${y}-${x}`} flipCellsAround={() => this.flipCellsAround(`${y}-${x}`)}/>)}
+      </tr>)
 
     return (
       <tbody className="Board">
@@ -113,7 +109,6 @@ class Board extends Component {
       )
   }
 }
-
 
 export default Board;
 
